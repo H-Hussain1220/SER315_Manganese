@@ -1,18 +1,16 @@
-## Getting Started
+# Bike Racing Registration System
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+## Overview
+This is a Java based console application designed to manage race registrations. It is developed for the Manganese team for Deliverable 3 for SER315.
 
-## Folder Structure
+## Architecture & Design Patterns
+This system adheres to the **Model-View-Controller (MVC)** architectural pattern to separate business logic from the user interface. 
 
-The workspace contains two folders by default, where:
+It integrates two core design patterns:
+* **Strategy Pattern:** Implemented within the `RegistrationController` to dynamically switch between `OfficialRegistrationStrategy` and `UnofficialRegistrationStrategy` rulesets based on race type.
+* **Observer Pattern:** Implemented in the Model layer. The `RaceResult` class acts as the Subject, notifying registered `Racer` objects (Observers) to trigger notifications when race placements are finalized.
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+## How to Run (Windows PowerShell)
+1. Compile the source code:
+   ```powershell
+   javac -d bin (Get-ChildItem -Recurse -Filter *.java).FullName
