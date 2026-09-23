@@ -1,14 +1,19 @@
 package view;
+import model.License;
 import model.Race;
 import model.Racer;
 import model.RaceResult;
 import controller.RegistrationController;
 
+import java.time.LocalDate;
+
 public class Main {
     public static void main(String[] args) {
         System.out.println("Welcome to the Race Registration System!");
 
-        Racer testRacer = new Racer("Speed Racer", 3);
+        License testLicense = new License("testLicense1", 3,
+                LocalDate.now().plusYears(1), true);
+        Racer testRacer = new Racer("Speed Racer", 3, testLicense);
         Race officialRace = new Race("Desert Bike Race", true);
         
         System.out.println("\n--- Testing Registration Strategy ---");
