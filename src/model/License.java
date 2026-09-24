@@ -19,7 +19,7 @@ public class License {
 
 
     public boolean isValid() {
-        return active && expirationDate.isBefore(LocalDate.now());
+        return active && expirationDate.isAfter(LocalDate.now());
     }
 
     public String getLicenseID(){
