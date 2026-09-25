@@ -2,16 +2,14 @@ package view;
 import controller.RegistrationController;
 import java.time.LocalDate;
 import java.util.Scanner;
-import model.License;
-import model.Race;
-import model.RaceResult;
-import model.Racer;
+
+import model.*;
 
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         RegistrationController regController = new RegistrationController();
-        RaceResult results = new RaceResult(); //Subject for Observer
+
 
         //mock data for testing purposes
         Race officialRace = new Race("Desert Bike Race", true);
@@ -51,24 +49,15 @@ public class Main {
             int category = 3; // defaults to Cat 3 for the simulation
             if (catInput.equals("1")) category = 5;
             if (catInput.equals("2")) category = 4;
+            RaceDivision selectedDivision = new RaceDivision(category);
 
             //generate valid mock license
             License testLicense = new License("testLicense1", category, LocalDate.now().plusYears(1), true);
             
-            Racer currentRacer = new Racer(racerName, category, testLicense);
+            Racer currentRacer = new Racer(racerName, category, null);//change null to testLicense to make a valid test
 
 
-            if (selectedRace.isOfficial()) {
-                System.out.println("\nLicense Check");
-                System.out.println("Official race selected. Checking Cat " + category + " license...");
-                if (currentRacer.getLicense() != null && currentRacer.getLicense().isValid()) {
-                    System.out.println("License is valid. Continue to payment.");
-                } else {
-                    System.out.println("LICENSE ERROR: A valid license is required. Registration cancelled.");
-                    continue;
-                }
-            }
-            
+
             System.out.println("\nPAYMENT");
             System.out.print("Name on card: ");
             scanner.nextLine();
@@ -82,15 +71,24 @@ public class Main {
                 
                 System.out.println("\n--- PROCESSING REGISTRATION ---");
                 //trigger Strategy Pattern
-                regController.processRegistration(currentRacer, selectedRace);
+                boolean success = regController.processRegistration(currentRacer, selectedRace, selectedDivision);
 
-                //attach racer to RaceResult system for Observer pattern
-                results.attach(currentRacer); 
-                
-                System.out.println("\n[System: Simulating Event... Organizer posts race results]");
-                //trigger Observer Pattern (notification section)
-                results.finalizeResults(selectedRace.getRaceName() + " Cat " + category + " placements posted.");
-                
+                if(success) {
+                    System.out.println("Registration successful for " + currentRacer.getName() + " in race: "
+                            + selectedRace.getRaceName());
+
+
+                    //attach racer to RaceResult system for Observer pattern
+                    RaceResult results = new RaceResult(); //moved to here because it was duplicating when multiple races simmed
+                    results.attach(currentRacer);
+
+                    System.out.println("\n[System: Simulating Event... Organizer posts race results]");
+                    //trigger Observer Pattern (notification section)
+                    results.finalizeResults(selectedRace.getRaceName() + " Cat " + selectedDivision.getCategoryLevel() + " placements posted.");
+                }else{
+                    System.out.println("Registration failed for " + currentRacer.getName() + " in race: "
+                        + selectedRace.getRaceName());
+                }
             } else {
                 System.out.println("\nPAYMENT FAILED");
                 System.out.println("Registration was not completed. Returning to menu.");
