@@ -1,17 +1,23 @@
 package model;
-import observer.Subject;
-import observer.Observer;
 import java.util.ArrayList;
 import java.util.List;
+import observer.Observer;
+import observer.Subject;
 
 public class RaceResult implements Subject {
     private List<Observer> observers = new ArrayList<>();
     private String resultDetails;
+    private int finishPosition;
 
-    public void finalizeResults(String details) {
+    public void finalizeResults(String details, int finishPosition) {
         this.resultDetails = details;
-        System.out.println("Race results finalized: " + details);
-        notifyObservers("Results are in! Check to see if you earned an upgrade.");
+        this.finishPosition = finishPosition;
+        System.out.println("Race results finalized: " + details + " (Finished: #" + finishPosition + ")");
+        if (finishPosition <= 3) {
+            notifyObservers("Congratulations on your podium finish (#" + finishPosition + ")! You qualify for a Category Upgrade.");
+        } else {
+            notifyObservers("Results are in! You finished #" + finishPosition + ".");
+        }
     }
 
     @Override 

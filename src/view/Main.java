@@ -2,7 +2,6 @@ package view;
 import controller.RegistrationController;
 import java.time.LocalDate;
 import java.util.Scanner;
-
 import model.*;
 
 public class Main {
@@ -51,13 +50,30 @@ public class Main {
             if (catInput.equals("2")) category = 4;
             RaceDivision selectedDivision = new RaceDivision(category);
 
-            //generate valid mock license
-            License testLicense = new License("testLicense1", category, LocalDate.now().plusYears(1), true);
+            //allow testing for valid and invalid licenses in CLI
+            License racerLicense = null;
+            if (selectedRace.isOfficial()) {
+                System.out.print("\n[Simulation] Do you hold a valid Cat " + category + " license? (Y/N): ");
+                String hasLic = scanner.nextLine();
+                if (hasLic.equalsIgnoreCase("Y")) {
+                    racerLicense = new License("LIC-1001", category, LocalDate.now().plusYears(1), true);
+                }
+            }
             
-            Racer currentRacer = new Racer(racerName, category, null);//change null to testLicense to make a valid test
+            Racer currentRacer = new Racer(racerName, category, racerLicense);
+
+            System.out.println("\n--- VALIDATING REGISTRATION ---");
+            //moved to trigger strategy before payment
+            boolean eligible = regController.processRegistration(currentRacer, selectedRace, selectedDivision);
+
+            if (!eligible) {
+                System.out.println("Registration failed for " + currentRacer.getName() + " in race: "
+                        + selectedRace.getRaceName());
+                continue;
+            }
 
 
-
+            //payment processing
             System.out.println("\nPAYMENT");
             System.out.print("Name on card: ");
             scanner.nextLine();
@@ -69,29 +85,18 @@ public class Main {
             if (payChoice.equalsIgnoreCase("Y")) {
                 System.out.println("Payment successful.");
                 
-                System.out.println("\n--- PROCESSING REGISTRATION ---");
-                //trigger Strategy Pattern
-                boolean success = regController.processRegistration(currentRacer, selectedRace, selectedDivision);
+                System.out.println("\nREGISTRATION CONFIRMED");
+                System.out.println("Registration successful for " + currentRacer.getName() + " in race: " + selectedRace.getRaceName() + " (Cat " + category + ")");
 
-                if(success) {
-                    System.out.println("Registration successful for " + currentRacer.getName() + " in race: "
-                            + selectedRace.getRaceName());
+                //trigger observer pattern for race results and cat upgrade notification
+                RaceResult results = new RaceResult();
+                results.attach(currentRacer);
 
-
-                    //attach racer to RaceResult system for Observer pattern
-                    RaceResult results = new RaceResult(); //moved to here because it was duplicating when multiple races simmed
-                    results.attach(currentRacer);
-
-                    System.out.println("\n[System: Simulating Event... Organizer posts race results]");
-                    //trigger Observer Pattern (notification section)
-                    results.finalizeResults(selectedRace.getRaceName() + " Cat " + selectedDivision.getCategoryLevel() + " placements posted.");
-                }else{
-                    System.out.println("Registration failed for " + currentRacer.getName() + " in race: "
-                        + selectedRace.getRaceName());
-                }
+                System.out.println("\n[System: Simulating Event... Organizer posts race results]");
+                results.finalizeResults(selectedRace.getRaceName() + " Cat " + selectedDivision.getCategoryLevel() + " placements posted.", 1);
             } else {
                 System.out.println("\nPAYMENT FAILED");
-                System.out.println("Registration was not completed. Returning to menu.");
+                System.out.println("Please check your card and try again. Registration was not completed.");
             }
 
         }

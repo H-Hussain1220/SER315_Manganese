@@ -4,7 +4,6 @@ import observer.Observer;
 public class Racer implements Observer {
     private String name;
     private int currentCategory;
-
     private License license;
 
 
@@ -22,7 +21,15 @@ public class Racer implements Observer {
 
     @Override 
     public void update(String message) {
-        System.out.println("Notification for " + name + ": " + message);
+        if (message.contains("Category Upgrade") && currentCategory > 1) {
+            currentCategory--;
+            if (license != null) {
+                license.setCategoryLevel(currentCategory);
+            }
+            System.out.println("Notification for " + name + ": " + message + " [Upgraded to Cat " + currentCategory + "!]");
+        } else {
+            System.out.println("Notification for " + name + ": " + message);
+        }
     }
 
     public String getName() {
