@@ -14,3 +14,8 @@ It integrates two core design patterns:
 1. Compile the source code:
    ```powershell
    javac -d bin (Get-ChildItem -Recurse -Filter *.java).FullName
+
+## Error Flow Testing
+The application includes test races in the menu to demonstrate registration error flows:
+* Past Deadline Race: Uses a registration deadline that has already passed. Selecting this race displays a deadline error and prevents registration from continuing. 
+* Full Race: Uses 0 avaliable spaces. Selecting this race displays a capacity error and prevents registration from continuing. 

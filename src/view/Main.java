@@ -11,8 +11,10 @@ public class Main {
 
 
         //mock data for testing purposes
-        Race officialRace = new Race("Desert Bike Race", true);
-        Race unofficialRace = new Race("Mountain Bike Race", false);
+        Race officialRace = new Race("Desert Bike Race", true, LocalDate.now().plusDays(30), 50);
+        Race unofficialRace = new Race("Mountain Bike Race", false, LocalDate.now().plusDays(30), 50);
+        Race deadlineRace = new Race("Past Deadline Race", true, LocalDate.now().minusDays(2), 50);
+        Race fullRace = new Race("Full Race", true, LocalDate.now().plusDays(30), 0);
 
         System.out.println("Welcome to the Race Registration System!");
 
@@ -21,17 +23,41 @@ public class Main {
             System.out.println("\n--- Available Races---");
             System.out.println("1. " + officialRace.getRaceName() + " (Official)");
             System.out.println("2. " + unofficialRace.getRaceName() + " (Unofficial)");
-            System.out.println("3. Exit");
-            System.out.print("\nSelect an option (1-3): ");
+            System.out.println("3. " + deadlineRace.getRaceName() + " (Official)");
+            System.out.println("4. " + fullRace.getRaceName() + " (Official)");
+            System.out.println("5. Exit");
+            System.out.print("\nSelect an option (1-5): ");
 
             String choice = scanner.nextLine();
-            if (choice.equals("3")) {
+            if (choice.equals("5")) {
                 running = false;
                 System.out.println("Exiting the Race Registration System. Goodbye!");
                 continue;
             }
 
-            Race selectedRace = choice.equals("1") ? officialRace : unofficialRace;
+            Race selectedRace; 
+
+            if (choice.equals("1")) {
+                selectedRace = officialRace;
+            } else if (choice.equals("2")) {
+                selectedRace = unofficialRace;
+            } else if (choice.equals("3")) {
+                selectedRace = deadlineRace;
+            } else if (choice.equals("4")) {
+                selectedRace = fullRace;
+            } else {
+                continue;
+            }
+
+            if (choice.equals("3") || choice.equals("4")) {
+                Racer testRacer = new Racer("Test Racer", 3, null);
+                RaceDivision testDivision = new RaceDivision(3);
+
+                System.out.println("\n--- VALIDATING REGISTRATION ---");
+                regController.processRegistration(testRacer, selectedRace, testDivision);
+                continue;
+            }
+
 
             System.out.println("\n--- " + selectedRace.getRaceName().toUpperCase() + " DETAILS ---");
             System.out.println("Type: Road Race");
