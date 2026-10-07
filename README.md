@@ -32,3 +32,4 @@ java -cp bin view.Main
 The application includes test races in the menu to demonstrate registration error flows:
 * **Past Deadline Race:** Uses a registration deadline that has already passed. Selecting this race displays a deadline error and prevents registration from continuing.
 * **Full Race:** Uses 0 available spaces. Selecting this race displays a capacity error and prevents registration from continuing.
+* **Input Validation:** For prototyping purposes, any invalid category input during the registration flow will default to Cat 3 automatically.

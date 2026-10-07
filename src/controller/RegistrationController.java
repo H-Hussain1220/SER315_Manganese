@@ -4,6 +4,7 @@ import model.AuthenticationService;
 import model.Race;
 import model.RaceDivision;
 import model.Racer;
+import model.Registration;
 import strategy.OfficialRegistrationStrategy;
 import strategy.RegistrationStrategy;
 import strategy.UnofficialRegistrationStrategy;
@@ -33,7 +34,13 @@ public class RegistrationController {
         } else {
             this.strategy = new UnofficialRegistrationStrategy();
         }
-       return strategy.register(racer, race, division);
+
+        if (strategy.register(racer, race, division)) {
+            Registration newRegistration = new Registration(racer, race, division);
+            newRegistration.printRegistrationInfo();
+            return true;
+        }
+        return false;
     }
     
 }
