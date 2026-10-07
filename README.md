@@ -17,13 +17,18 @@ From the root project directory, run the following commands:
 mkdir bin -Force
 javac -d bin (Get-ChildItem -Recurse -Filter *.java).FullName
 java -cp bin view.Main
+```
 
-```bash/zsh
+## How to Compile and Run (macOS / Linux Bash & Zsh)
+From the root project directory, run the following commands:
+
+```bash
 mkdir -p bin
 javac -d bin $(find . -name "*.java")
 java -cp bin view.Main
+```
 
 ## Error Flow Testing
 The application includes test races in the menu to demonstrate registration error flows:
-* Past Deadline Race: Uses a registration deadline that has already passed. Selecting this race displays a deadline error and prevents registration from continuing. 
-* Full Race: Uses 0 avaliable spaces. Selecting this race displays a capacity error and prevents registration from continuing. 
+* **Past Deadline Race:** Uses a registration deadline that has already passed. Selecting this race displays a deadline error and prevents registration from continuing.
+* **Full Race:** Uses 0 available spaces. Selecting this race displays a capacity error and prevents registration from continuing.
