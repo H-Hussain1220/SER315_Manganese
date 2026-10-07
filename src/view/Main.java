@@ -49,16 +49,6 @@ public class Main {
                 continue;
             }
 
-            if (choice.equals("3") || choice.equals("4")) {
-                Racer testRacer = new Racer("Test Racer", 3, null);
-                RaceDivision testDivision = new RaceDivision(3);
-
-                System.out.println("\n--- VALIDATING REGISTRATION ---");
-                regController.processRegistration(testRacer, selectedRace, testDivision);
-                continue;
-            }
-
-
             System.out.println("\n--- " + selectedRace.getRaceName().toUpperCase() + " DETAILS ---");
             System.out.println("Type: Road Race");
             System.out.println("Status: " + (selectedRace.isOfficial() ? "Official" : "Unofficial"));
@@ -78,7 +68,7 @@ public class Main {
 
             //allow testing for valid and invalid licenses in CLI
             License racerLicense = null;
-            if (selectedRace.isOfficial()) {
+            if (selectedRace.isOfficial() && selectedRace.isRegistrationOpen() && selectedRace.hasSpace()) {
                 System.out.print("\n[Simulation] Do you hold a valid Cat " + category + " license? (Y/N): ");
                 String hasLic = scanner.nextLine();
                 if (hasLic.equalsIgnoreCase("Y")) {

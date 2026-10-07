@@ -1,12 +1,12 @@
 package controller;
 
+import model.AuthenticationService;
 import model.Race;
 import model.RaceDivision;
 import model.Racer;
 import strategy.OfficialRegistrationStrategy;
 import strategy.RegistrationStrategy;
 import strategy.UnofficialRegistrationStrategy;
-import model.AuthenticationService;
 
 public class RegistrationController {
     private RegistrationStrategy strategy;
@@ -19,7 +19,7 @@ public class RegistrationController {
         }
 
         if (!race.isRegistrationOpen()) {
-            System.out.println("DEADLINE PASSED: The registration deadline has passed. Registration was not completed.");
+            System.out.println("REGISTRATION CLOSED: The registration deadline has passed. Registration was not completed.");
             return false;
         }
 
