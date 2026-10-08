@@ -4,6 +4,12 @@ import java.util.List;
 import observer.Observer;
 import observer.Subject;
 
+/**
+ * Represents a racer's race result and acts as the Subject
+ * in the Observer pattern. Attached racers are notified when
+ * race results are finalized.
+ */
+
 public class RaceResult implements Subject {
     private List<Observer> observers = new ArrayList<>();
     private String resultDetails;
@@ -13,13 +19,14 @@ public class RaceResult implements Subject {
         this.resultDetails = details;
         this.finishPosition = finishPosition;
         System.out.println("Race results finalized: " + details + " (Finished: #" + finishPosition + ")");
+        //finishing in the top 3 is considered a podium finish
         if (finishPosition <= 3) {
             notifyObservers("Congratulations on your podium finish (#" + finishPosition + ")! You qualify for a Category Upgrade.");
         } else {
             notifyObservers("Results are in! You finished #" + finishPosition + ".");
         }
     }
-
+    //RaceResult acts as the Subject and notifies Racer observers when results are finalized
     @Override 
     public void attach(Observer observer) {
         observers.add(observer);

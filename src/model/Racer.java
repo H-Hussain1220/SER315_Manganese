@@ -1,6 +1,12 @@
 package model;
 import observer.Observer;
 
+
+/**
+ * Represents a racer in the system.
+ * Racer also acts as an Observer and receives notifications
+ * when race results or category upgrades are posted.
+ */
 public class Racer implements Observer {
     private String name;
     private int currentCategory;

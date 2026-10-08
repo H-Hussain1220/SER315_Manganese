@@ -2,6 +2,11 @@ package model;
 
 import java.time.LocalDate;
 
+/**
+ * Represents a racer's registration for a specific race and division.
+ * Stores the information associated with the registration record.
+ */
+
 public class Registration {
     private Racer racer;
     private Race race;

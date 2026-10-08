@@ -2,7 +2,10 @@ package model;
 
 import java.time.LocalDate;
 
-
+/**
+ * Represents a racer's competition license, including category,
+ * expiration date, and active status.
+ */
 public class License {
 
     private String licenseID;

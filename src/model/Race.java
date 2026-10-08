@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
 
+/**
+ * Represents a race available for registration.
+ * Stores whether the race is official, its registration deadline,
+ * available capacity, and the category divisions offered by the race.
+ */
+
 public class Race {
     private String raceName;
     private boolean isOfficial;
@@ -17,7 +23,7 @@ public class Race {
         this.isOfficial = isOfficial;
         this.registrationDeadline = registrationDeadline;
         this.spacesAvailable = spacesAvailable;
-
+        //each race contains divisions for Categories 1-5
         divisions = new ArrayList<>();
         divisions.add(new RaceDivision(1));
         divisions.add(new RaceDivision(2));
@@ -31,7 +37,7 @@ public class Race {
     public String getRaceName() {
         return raceName;
     }
-    
+    //checks if registration is still open based on the deadline
     public boolean isRegistrationOpen() {
         return !LocalDate.now().isAfter(registrationDeadline);
     }

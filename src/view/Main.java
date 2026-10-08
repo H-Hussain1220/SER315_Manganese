@@ -4,13 +4,19 @@ import java.time.LocalDate;
 import java.util.Scanner;
 import model.*;
 
+
+/**
+ * Entry point for the console-based race registration prototype.
+ * Demonstrates the main registration workflow, validation rules,
+ * simulated payment processing, and the Strategy and Observer patterns.
+ */
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         RegistrationController regController = new RegistrationController();
 
 
-        //mock data for testing purposes
+        //mock race data for testing purposes
         Race officialRace = new Race("Desert Bike Race", true, LocalDate.now().plusDays(30), 50);
         Race unofficialRace = new Race("Mountain Bike Race", false, LocalDate.now().plusDays(30), 50);
         Race deadlineRace = new Race("Past Deadline Race", true, LocalDate.now().minusDays(2), 50);
@@ -66,7 +72,8 @@ public class Main {
             if (catInput.equals("2")) category = 4;
             RaceDivision selectedDivision = new RaceDivision(category);
 
-            //allow testing for valid and invalid licenses in CLI
+            // Official races require a valid license. For this prototype,
+            // the user chooses whether a matching mock license is created.
             License racerLicense = null;
             if (selectedRace.isOfficial() && selectedRace.isRegistrationOpen() && selectedRace.hasSpace()) {
                 System.out.print("\n[Simulation] Do you hold a valid Cat " + category + " license? (Y/N): ");
@@ -77,9 +84,9 @@ public class Main {
             }
             
             Racer currentRacer = new Racer(racerName, category, racerLicense);
-
+            //validate registration before payment so ineligible racers are not charged
             System.out.println("\n--- VALIDATING REGISTRATION ---");
-            //moved to trigger strategy before payment
+
             boolean eligible = regController.processRegistration(currentRacer, selectedRace, selectedDivision);
 
             if (!eligible) {
@@ -89,7 +96,7 @@ public class Main {
             }
 
 
-            //payment processing
+            //Simulated payment step for the prototype; card information is not stored or processed.
             System.out.println("\nPAYMENT");
             System.out.print("Name on card: ");
             scanner.nextLine();
@@ -109,6 +116,8 @@ public class Main {
                 results.attach(currentRacer);
 
                 System.out.println("\n[System: Simulating Event... Organizer posts race results]");
+
+                // First place is hardcoded here to demonstrate the podium/upgrade notification path.
                 results.finalizeResults(selectedRace.getRaceName() + " Cat " + selectedDivision.getCategoryLevel() + " placements posted.", 1);
             } else {
                 System.out.println("\nPAYMENT FAILED");

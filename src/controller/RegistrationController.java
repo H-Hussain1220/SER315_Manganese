@@ -9,9 +9,17 @@ import strategy.OfficialRegistrationStrategy;
 import strategy.RegistrationStrategy;
 import strategy.UnofficialRegistrationStrategy;
 
+
+/**
+ * Acts as the Strategy context for race registration.
+ * Shared registration rules are checked here before delegating
+ * race-specific eligibility rules to the selected strategy.
+ */
+
 public class RegistrationController {
     private RegistrationStrategy strategy;
     private AuthenticationService authenticationService = new AuthenticationService();
+
 
     public boolean processRegistration(Racer racer, Race race, RaceDivision division) {
         if (!authenticationService.authenticateUser(racer)) {
